@@ -46,7 +46,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     username = os.environ.get("PERSONAL_DATA_DB_USERNAME", "root")
     password = os.environ.get("PERSONAL_DATA_DB_PASSWORD", "")
     host = os.environ.get("PERSONAL_DATA_DB_HOST", "localhost")
-    name = os.environ.get("PERSONAL_DATA_DB_NAME", "")
+    name = os.environ.get("PERSONAL_DATA_DB_NAME", "holberton")
 
     cnx = mysql.connector.connect(
             user=username,
@@ -56,7 +56,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
             )
     return cnx
 
-""
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
     """
