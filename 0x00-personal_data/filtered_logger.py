@@ -62,7 +62,7 @@ def main() -> None:
     """
     columns = ["name", "email", "phone", "ssn", "password", "ip",
                "last_login" , "user_agent"]
-    query = "SELECT {} FROM users;".format(fields)
+    query = "SELECT {} FROM users;".format(",".join(columns))
     info_logger = get_logger()
     connection = get_db()
     with connection.cursor() as cursor:
