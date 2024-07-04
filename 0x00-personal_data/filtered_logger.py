@@ -11,7 +11,8 @@ patterns = {
 }
 
 
-def filter_datum(fields: List, redaction: str, message: str, seperator: str):
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 seperator: str):
     """
     This function returns the log message obfuscated
     """
