@@ -2,11 +2,14 @@
 """A module for filtering logs.
 """
 import re
-from typing import List
+from typing import List, Iterable
 import logging
 
 
-def filter_datum(fields: List[str], redaction: str, message: str,
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
+def filter_datum(fields: Iterable[str], redaction: str, message: str,
                  separator: str,) -> str:
     """
     This function returns the log message obfuscated
@@ -17,6 +20,23 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
+def get_logger() -> logging.Logger:
+    """
+    This function creates a logger object
+    """
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    console = logging.StreamHandler()
+    formatter = RedactingFormatter(PII_FIELDS)
+
+    console.setFormatter(formatter)
+    logger.addHandler(console)
+
+    return logger
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
     """
@@ -25,7 +45,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]):
+    def __init__(self, fields: Iterable[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
