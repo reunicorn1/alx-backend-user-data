@@ -61,14 +61,17 @@ def main() -> None:
     """
     logger = get_logger()
     formatter = logging.Formatter(
-            "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+            "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: name=%(name)s;\
+                    email=%(email)s; phone=%(phone)s; ssn=%(ssn)s; \
+                    password=%(password)s; ip=%(ip)s; last_login=%(last_login)s;\
+                    user_agent=%(user_agent)s;"
             )
 
     csx = get_db()
     cursor = csx.cursor()
     cursor.execute("SELECT * from users;")
     for row in cursor:
-        print(row)
+        logger.info(row)
 
 
 class RedactingFormatter(logging.Formatter):
