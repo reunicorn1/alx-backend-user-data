@@ -60,8 +60,8 @@ def main() -> None:
     """
     The main entry of the application
     """
-    fields = "name,email,phone,ssn,password,ip,last_login,user_agent"
-    columns = fields.split(',')
+    columns = ["name", "email", "phone", "ssn", "password", "ip",
+               "last_login" , "user_agent"]
     query = "SELECT {} FROM users;".format(fields)
     info_logger = get_logger()
     connection = get_db()
