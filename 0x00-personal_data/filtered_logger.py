@@ -5,16 +5,13 @@
 import re
 from typing import List
 
-patterns = {
-    'extract': lambda x, y: r'(?P<field>{})=[^{}]*'.format('|'.join(x), y),
-    'replace': lambda x: r'\g<field>={}'.format(x),
-}
-
 
 def filter_datum(fields: List[str], redaction: str, message: str,
-                 seperator: str):
+                 seperator: str) -> str:
     """
     This function returns the log message obfuscated
     """
-    extract, replace = (patterns["extract"], patterns["replace"])
-    return re.sub(extract(fields, seperator), replace(redaction), message)
+    for field in fields:
+         regex = '(?<={}=)(.*?)(?={})'.format(field, seperator)
+         message = re.sub(regex, redaction, message)
+     return message
