@@ -9,12 +9,7 @@ from typing import List
 def filter_datum(fields: List, redaction: str, message: str, seperator: str):
     """
     This function returns the log message obfuscated
-    a
-    very
-    long
-    docstring
     """
-    for field in fields:
-         regex = '(?<={}=)(.*?)(?={})'.format(field, seperator)
-         message = re.sub(regex, redaction, message)
-     return messagere.sub(pattern(fields, seperator), r'\1' + redaction, message)
+    regex = r'({}=).*?(?={}|$)'.format(
+            '|'.join(map(re.escape, fields)), re.escape(seperator))
+    return re.sub(regex,  r'\1' + redaction, message)
