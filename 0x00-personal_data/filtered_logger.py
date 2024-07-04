@@ -78,7 +78,6 @@ def main() -> None:
             info_logger.handle(log_record)
 
 
-
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
     """
