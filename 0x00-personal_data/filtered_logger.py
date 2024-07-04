@@ -48,12 +48,27 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     db_pwd = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     connection = mysql.connector.connection.MySQLConnection(
         host=db_host,
-        port=3306,
         user=db_user,
         password=db_pwd,
         database=db_name,
     )
     return connection
+
+
+def main() -> None:
+    """
+    The main entry of the application
+    """
+    logger = get_logger()
+    formatter = logging.Formatter(
+            "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+            )
+
+    csx = get_db()
+    cursor = csx.cursor()
+    cursor.execute("SELECT * from users;")
+    for row in cursor:
+        print(row)
 
 
 class RedactingFormatter(logging.Formatter):
@@ -74,3 +89,7 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(self.fields, self.REDACTION,
                                   record.msg, self.SEPARATOR)
         return super().format(record)
+
+
+if __name__ == "__main__":
+    main()
