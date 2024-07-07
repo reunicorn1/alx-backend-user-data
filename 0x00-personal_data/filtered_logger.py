@@ -62,16 +62,18 @@ def main() -> None:
     """
     csx = get_db()
     cur = csx.cursor()
-    cur.execute("SELECT * from users;")
+    cur.execute("SELECT * FROM users;")
     rows = cur.fetchall()
 
     logger = get_logger()
 
-    fields = ['name', 'email', 'phone', 'ssn', 'password', 'ip', 'last_login',
-              'user_agent']
+    fields = ['name', 'email', 'phone', 'ssn', 'password', 'ip',
+              'last_login', 'user_agent']
+
     for row in rows:
-        string = " ".join([f"{f}={r};" for r, f in zip(row, fields)])
-        logger.info(string)
+        s = [f"{f}={r.decode('utf-8') if isinstance(r, bytes) else r};"
+             for r, f in zip(row, fields)]
+        logger.info(" ".join(s))
 
     cur.close()
     csx.close()
