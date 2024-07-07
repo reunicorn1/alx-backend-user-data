@@ -61,11 +61,20 @@ def main() -> None:
     This is the entry point of the app
     """
     csx = get_db()
-    cur = db.cursor()
+    cur = csx.cursor()
     cur.execute("SELECT * from users;")
     rows = cur.fetchall()
+
+    logger = get_logger()
+
+    fields = ['name', 'email', 'phone', 'ssn', 'password', 'ip', 'last_login',
+              'user_agent']
     for row in rows:
-        print(row)
+        string = " ".join([f"{f}={r};" for r, f in zip(row, fields)])
+        logger.info(string)
+
+    cur.close()
+    csx.close()
 
 
 class RedactingFormatter(logging.Formatter):
