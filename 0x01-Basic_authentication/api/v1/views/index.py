@@ -30,6 +30,15 @@ def stats() -> str:
 def unauth() -> str:
     """ GET /api/v1/unauthorized
     Return:
-        - aborts the applications with error case 401
+        - aborts the application with error code 401
     """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden() -> str:
+    """ GET /api/v1/forbidden
+    Return:
+        - aborts the application with error code 403
+    """
+    abort(403)
