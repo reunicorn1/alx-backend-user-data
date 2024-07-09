@@ -50,7 +50,7 @@ class BasicAuth(Auth):
             return None
         try:
             d = base64.b64decode(base64_authorization_header).decode('utf-8')
-        except binascii.Error:
+        except UnicodeDecodeError:
             return None
         return d
 
@@ -99,3 +99,19 @@ class BasicAuth(Auth):
             return users[0]
         except KeyError:
             return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """
+        This function retrieves the current_user using the request
+
+        Parameters:
+            request: Flask request object
+
+        Returns:
+            A user instance
+        """
+        authheader = self.authorization_header(request)
+        credentials = self.decode_base64_authorization_header(
+                self.extract_base64_authorization_header(authheader))
+        email, pwd = self.extract_user_credentials(credentials)
+        return self.user_object_from_credentials(email, pwd)
