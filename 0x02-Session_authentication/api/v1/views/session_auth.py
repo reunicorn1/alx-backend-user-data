@@ -29,3 +29,16 @@ def view_session_login() -> str:
     resp = make_response(users[0].to_json())
     resp.set_cookie(os.getenv('SESSION_NAME'), _id)
     return resp
+
+
+@app_views.route('/auth_session/logout', methods=['DELETE'],
+                 strict_slashes=False)
+def view_delete_session() -> str:
+    """ DELETE /api/v1/auth_session/logout
+    Returns:
+        - an empty dictionary with status code 200
+    """
+    from api.v1.app import auth
+    if not auth.destroy_session(request):
+        abort(404)
+    return jsonify({}), 200
