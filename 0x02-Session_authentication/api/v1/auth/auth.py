@@ -4,6 +4,7 @@ Managing the API authentication
 """
 from flask import request
 from typing import List, TypeVar
+import os
 
 
 class Auth:
@@ -64,3 +65,20 @@ class Auth:
             None
         """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        This method returns the cookie value from a request as session
+        id will be stored in a cookie when using the classic session
+        authentiation
+
+        Attributes:
+        request
+
+        Returns:
+            the cookie value from a request
+        """
+        if not request:
+            return None
+        cookie_name = os.getenv('SESSION_NAME', "_my_session_id")
+        return request.cookies.get(cookie_name)
