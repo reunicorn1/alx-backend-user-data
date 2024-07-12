@@ -42,26 +42,10 @@ class SessionExpAuth(SessionAuth):
                 session_id not in self.user_id_by_session_id.keys()):
             return None
         if self.session_duration <= 0:
-            return self.user_id_by_session_id[session_id]
+            return self.user_id_by_session_id[session_id]['user_id']
 
         if (not self.user_id_by_session_id[session_id].get('created_at') or
                 self.user_id_by_session_id[session_id]['created_at'] +
                 timedelta(seconds=self.session_duration) < datetime.now()):
             return None
-        return self.user_id_by_session_id[session_id]
-
-    def current_user(self, request=None):
-        """
-        This method returns the current user instances out of the
-        request during session authentication
-
-        Attributes:
-        request: flask request object
-
-        Returns:
-            user instance
-        """
-        dictionary = self.user_id_for_session_id(self.session_cookie(request))
-        if dictionary:
-            return User.get(dictionary['user_id'])
-        return None
+        return self.user_id_by_session_id[session_id]['user_id']
