@@ -2,16 +2,16 @@
 
 """DB module.
 """
-from sqlalchemy import create_engine, tuple_
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 from user import Base, User
 
 
 class DB:
-    """DB class.
+    """DB class
     """
 
     def __init__(self) -> None:
@@ -24,7 +24,7 @@ class DB:
 
     @property
     def _session(self) -> Session:
-        """Memoized session object.
+        """Memoized session object
         """
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
@@ -32,10 +32,18 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """Adds a new user to the database.
+        """Adds a new user to the database
         """
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
 
         return user
+
+    def find_user_by(self, **kwargs: str) -> User:
+        """Finds a user based on keyworded attributes
+        """
+        results = self._session.query(User).filter_by(**kwargs).all()
+        if not results:
+            raise NoResultFound
+        return results[0]
