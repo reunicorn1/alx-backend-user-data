@@ -43,9 +43,12 @@ class DB:
 
     def find_user_by(self, **kwargs: str) -> User:
         """Finds a user based on keyworded attributes
-        """
+
         for k in kwargs:
             if not hasattr(User, k):
                 raise InvalidRequestError
+        """
         result = self._session.query(User).filter_by(**kwargs).first()
+        if not result:
+            raise NoResultFound
         return result
