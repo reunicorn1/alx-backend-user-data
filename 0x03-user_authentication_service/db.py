@@ -48,6 +48,4 @@ class DB:
             if not hasattr(User, k):
                 raise InvalidRequestError
         result = self._session.query(User).filter_by(**kwargs).first()
-        if not result:
-            raise NoResultFound
         return result
