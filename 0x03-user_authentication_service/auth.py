@@ -45,6 +45,7 @@ class Auth:
             pass
         return False
 
+    @property
     def _generate_uuid() -> str:
         """This method generate random uuids
         """
