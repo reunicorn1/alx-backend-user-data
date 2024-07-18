@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, jsonify, request, abort, make_response
+from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 
 
@@ -39,6 +39,19 @@ def login() -> str:
         return resp
     else:
         abort(401)
+
+
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
+def logout() -> str:
+    """This route destroys a session with a linked user
+    """
+    session = request.cookies.get('session_id')
+    user = Auth.get_user_from_session_id
+    if user:
+        AUTH.destroy_session(user.id)
+        redirect("/")
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":
