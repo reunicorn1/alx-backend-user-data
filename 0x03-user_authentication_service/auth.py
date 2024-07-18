@@ -77,3 +77,4 @@ class Auth:
         """This method destroys a session for an active user
         """
         self._db.update_user(user_id, session_id=None)
+        return None
