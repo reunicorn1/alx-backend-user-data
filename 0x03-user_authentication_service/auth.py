@@ -95,16 +95,10 @@ class Auth:
         """This method resets the password for a user based on the fact
         that he owns a reset_token
         """
-        user = None
         try:
             user = self._db.find_user_by(reset_token=reset_token)
+            password = _hash_password(password)
+            self._db.update_user(user.id, hashed_password=password,
+                                 reset_token=None)
         except NoResultFound:
-            user = None
-        if user is None:
-            raise ValueError()
-        new_password_hash = _hash_password(password)
-        self._db.update_user(
-            user.id,
-            hashed_password=new_password_hash,
-            reset_token=None,
-        )
+            raise ValueError
