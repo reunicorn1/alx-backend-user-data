@@ -46,10 +46,10 @@ def logout() -> str:
     """This route destroys a session with a linked user
     """
     session = request.cookies.get('session_id')
-    user = Auth.get_user_from_session_id
+    user = AUTH.get_user_from_session_id(session)
     if user:
         AUTH.destroy_session(user.id)
-        redirect("/")
+        return redirect("/")
     else:
         abort(403)
 

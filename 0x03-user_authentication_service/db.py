@@ -63,7 +63,7 @@ class DB:
         attrs = {"id": int, "email": str, "hashed_password": str,
                  "session_id": str, "reset_token": str}
         for k, v in kwargs.items():
-            if hasattr(User, k) and attrs[k] == type(v):
+            if hasattr(User, k) and (attrs[k] == type(v) or not v):
                 setattr(user, k, v)
             else:
                 raise ValueError
