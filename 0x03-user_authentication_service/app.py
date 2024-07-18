@@ -83,9 +83,9 @@ def get_reset_password_token() -> str:
 def update_password() -> str:
     """This route updates your passwords after you request a reset token
     """
-    email = request.form["email"],
-    reset_token = request.form["reset_token"]
-    new_password = request.form["new_password"]
+    email = request.form.get("email")
+    reset_token = request.form.get("reset_token")
+    new_password = request.form.get("new_password")
     try:
         AUTH.update_password(reset_token, new_password)
         return jsonify({"email": f"{email}",
