@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+The APP
+"""
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
 
@@ -81,7 +84,8 @@ def get_reset_password_token() -> str:
 
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password() -> str:
-    """This route updates your passwords after you request a reset token
+    """This route updates your passwords after you request a reset
+    token
     """
     email = request.form.get("email")
     reset_token = request.form.get("reset_token")

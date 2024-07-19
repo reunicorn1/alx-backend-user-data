@@ -128,6 +128,11 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
             "message": "Password updated"
             }
 
+    #  Attempting again
+    y = requests.put(URL + '/reset_password', data=args)
+    assert y.status_code == 403
+
+
 
 EMAIL = "guillaume@holberton.io"
 PASSWD = "b4l0u"
